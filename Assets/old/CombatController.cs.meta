@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3f0d2f69b13bab8488ab0eda1ebc4dd0
+timeCreated: 1452865508
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Text: {instanceID: 0}
+  - PlayerAvatar: {fileID: 107412, guid: 426ce7bb63d3b2943a35d336fcb49583, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
