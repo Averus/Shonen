@@ -8,10 +8,13 @@ public class Ability: IBeingComponent
 {
     public TextController textController;
 
-
     public GameObject parentObject { get; set; }
 
     public string abilityName = "BLANK ABILITY";
+
+    public CombatStates runsInState;
+
+    public bool activeAbility; //Is this ability Active or Passive? Active abilities fire their effects when they're selected, passive abilities fire whenever their conditions are fulfilled regardless of being selected by the player
 
     public bool selected = false; //this is set to true if its being used. EDIT I dont know if this is used atm
     public bool available = false; //this is set to true if all the component checks return true. EDIT I dont know if this is used atm
@@ -21,9 +24,7 @@ public class Ability: IBeingComponent
     public int ranks = 0; //how practiced the character is with this skill
 
     public int numberOfTargets = 0; //number of targets
-    public enum RelatedMod { STR, DEX, CON, INT, WIS, CHA };
-
-
+    //public enum RelatedMod { STR, DEX, CON, INT, WIS, CHA };
 
     public List<IAbilityComponent> AbilityComponents = new List<IAbilityComponent>(); //effects/flaws/costs (all called ability components now)
     public List<ITarget> Targets = new List<ITarget>(); //Lists all valid targets (self, just enemies, just dragons or water types etc)
@@ -89,12 +90,13 @@ public class Ability: IBeingComponent
            // Effects
         }
     }
-    //I NEED A ROLL AND COUNTER ROLL SYSTEM SINCE THATS THE CORE RESOLUTION MECHANIC ALL THIS STUFF IS BASICALLY JUST LOADING UP THOSE FEW BASIC PARAMETERS OF 1D20 + X + Y + Z VS [SIMILAR].
+   
 
-    public Ability(GameObject parentObject, string name) //Constructor
+    public Ability(GameObject parentObject, string name, CombatStates stateThisRunsIn, bool active) //Constructor
     {
         this.parentObject = parentObject;
         abilityName = name;
+
     }
 
 
@@ -103,6 +105,7 @@ public class Ability: IBeingComponent
     public void Awake() {
 
         textController = GameObject.Find("TextControllerObject").GetComponent<TextController>();
+
       
 
     }

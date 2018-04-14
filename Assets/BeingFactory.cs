@@ -30,7 +30,7 @@ public class BeingFactory {
         Resource focus = new Resource(gameObject, "Focus", 20);
         gameObject.GetComponent<Being>().resources.Add(focus);
 
-        Ability punch = new Ability(gameObject, "Punch");
+        Ability punch = new Ability(gameObject, "Punch", CombatStates.CALCULATEDAMAGE, true);
         punch.Awake();
         punch.numberOfTargets = 1;
         Cost costsFocus = new Cost(gameObject, "costsFocus", focus, 3);
@@ -43,7 +43,7 @@ public class BeingFactory {
 
         
 
-        Ability demonSlash = new Ability(gameObject, "Demon Slash");
+        Ability demonSlash = new Ability(gameObject, "Demon Slash", CombatStates.CALCULATEDAMAGE, true);
         demonSlash.Awake();
         demonSlash.numberOfTargets = 1;
         RequiresEquipped requiresSword = new RequiresEquipped(gameObject, "Requires Sword", 1);
@@ -53,14 +53,14 @@ public class BeingFactory {
         enemies2.Awake();
         demonSlash.Targets.Add(enemies2);
 
-        Ability kick = new Ability(gameObject, "Kick Barrage");
+        Ability kick = new Ability(gameObject, "Kick Barrage", CombatStates.CALCULATEDAMAGE, true);
         kick.Awake();
         kick.numberOfTargets = 4;
         Enemies enemies3 = new Enemies(gameObject, "Enemies");
         enemies3.Awake();
         kick.Targets.Add(enemies3);
 
-        Ability heal= new Ability(gameObject, "Heal");
+        Ability heal= new Ability(gameObject, "Heal", CombatStates.CALCULATEDAMAGE, true);
         heal.Awake();
         heal.numberOfTargets = 1;
         Self self = new Self(gameObject, "Self");

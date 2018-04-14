@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
+
+public enum CombatStates
+{
+    INITIATIVESORT, MAINLOOP, PLAYERTURN, LISTABILITIES, SELECTABILITIES, LISTTARGETS, SELECTTARGETS, NPCTURN, WIN, LOSE,
+    CALCULATETOHIT,
+    CALCULATETOHITDEFENCE,
+    CALCULATEDAMAGE,
+    CALCULATEDAMAGEDEFENCE
+}
+
+
 [System.Serializable]
 public class CombatController : MonoBehaviour
 {
@@ -35,13 +46,6 @@ public class CombatController : MonoBehaviour
     public int currentElement = 0;
 
     public int playerControlledCombatantElement;
-
-    public enum CombatStates { INITIATIVESORT, MAINLOOP, PLAYERTURN, LISTABILITIES, SELECTABILITIES, LISTTARGETS, SELECTTARGETS, NPCTURN, WIN, LOSE,
-        CALCULATETOHIT,
-        CALCULATETOHITDEFENCE,
-        CALCULATEDAMAGE,
-        CALCULATEDAMAGEDEFENCE
-    }
 
     public CombatStates currentState;
 
@@ -127,6 +131,11 @@ public class CombatController : MonoBehaviour
         turn++; //Increment the turn counter
         currentElement++;
         currentState = CombatStates.MAINLOOP;
+    }
+
+    public void CheckForRelevantPassiveAbilities(Being b,  )
+    {
+        //if ability is passive and fires in teh current state then fire?
     }
 
     public void SortByInitiative()
