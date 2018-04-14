@@ -133,7 +133,7 @@ public class CombatController : MonoBehaviour
         currentState = CombatStates.MAINLOOP;
     }
 
-    public void CheckForRelevantPassiveAbilities(Being b,  )
+    public void CheckForRelevantPassiveAbilities(Being b, )
     {
         //if ability is passive and fires in teh current state then fire?
     }
