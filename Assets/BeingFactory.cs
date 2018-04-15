@@ -11,24 +11,26 @@ public class BeingFactory {
     {
         GameObject gameObject = new GameObject(name);
         gameObject.AddComponent<Being>();
-       
 
-        gameObject.GetComponent<Being>().beingName = name;
+        Being being = gameObject.GetComponent<Being>(); //Get a reference to the new Being to avoid multiple GetComponent calls
 
-        gameObject.GetComponent<Being>().race = "Human";
+        being.beingName = name;
 
-        gameObject.GetComponent<Being>().HP = 100;
-        gameObject.GetComponent<Being>().RandomStats();
+        being.race = "Human";
 
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "head"));
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "torso"));
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "left hand"));
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "right hand"));
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "legs"));
-        gameObject.GetComponent<Being>().bodyLocations.Add(new BodyLocation(gameObject, "feet"));
+        being.HP = 100;
+        being.RandomStats();
+        being.powerLevel = 0;
+
+        being.bodyLocations.Add(new BodyLocation(gameObject, "head"));
+        being.bodyLocations.Add(new BodyLocation(gameObject, "torso"));
+        being.bodyLocations.Add(new BodyLocation(gameObject, "left hand"));
+        being.bodyLocations.Add(new BodyLocation(gameObject, "right hand"));
+        being.bodyLocations.Add(new BodyLocation(gameObject, "legs"));
+        being.bodyLocations.Add(new BodyLocation(gameObject, "feet"));
 
         Resource focus = new Resource(gameObject, "Focus", 20);
-        gameObject.GetComponent<Being>().resources.Add(focus);
+        being.resources.Add(focus);
 
         Ability punch = new Ability(gameObject, "Punch", CombatStates.CALCULATEDAMAGE, true);
         punch.Awake();
@@ -40,6 +42,7 @@ public class BeingFactory {
         Self self2 = new Self(gameObject, "Self");
         self2.Awake();
         punch.Targets.Add(self2);
+        punch.ranks = 100;
 
         
 
@@ -75,18 +78,18 @@ public class BeingFactory {
         heal.Targets.Add(self);
 
 
-        gameObject.GetComponent<Being>().abilities.Add(punch);
-        gameObject.GetComponent<Being>().abilities.Add(demonSlash);
-        gameObject.GetComponent<Being>().abilities.Add(kick);
-        gameObject.GetComponent<Being>().abilities.Add(heal);
-        gameObject.GetComponent<Being>().abilities.Add(magicShield);
+        being.abilities.Add(punch);
+        being.abilities.Add(demonSlash);
+        being.abilities.Add(kick);
+        being.abilities.Add(heal);
+        being.abilities.Add(magicShield);
 
         // RequiresEquipped requiresStaff = new RequiresEquipped(gameObject, "Requires Staff", 100);
         //  heal.Flaws.Add(requiresStaff);
         // requiresStaff.Awake();
 
         Sword sword = new Sword(gameObject, "Bronze Sword", 1);
-        gameObject.GetComponent<Being>().Equip(sword, "right hand");
+        being.Equip(sword, "right hand");
 
 
 

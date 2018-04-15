@@ -25,6 +25,8 @@ public class CombatController : MonoBehaviour
 
     public GameObject textControllerObj;
 
+    static System.Random rng = new System.Random();
+
     public int turn = 0;
 
     public List<Being> combatants = new List<Being>(); //All the Beings in combat
@@ -201,7 +203,7 @@ public class CombatController : MonoBehaviour
             }
             for (int ii = 0; ii < availableAbilities.Count; ii++)
             {
-                availableAbilities[ii].Use()); //Here it's using a passive ability so it needs a gambit style setup from which it gets its bahaviour (behaviour of abilities that arent player controlled)
+                Print("Using " + availableAbilities[ii].abilityName); //availableAbilities[ii].Use(); //Here it's using a passive ability so it needs a gambit style setup from which it gets its behaviour (behaviour of abilities that arent player controlled)
             }
         
         }
@@ -283,8 +285,11 @@ public class CombatController : MonoBehaviour
 
     private void CalculateToHit()
     {
+        float dex = (float)combatants[currentElement].GetComponent<Being>().DEX;
+        int random = rng.Next(1, 101);
+        float toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((dex / 100) * availableAbilities[playerSelectedAbility].ranks) + random;
 
-        int toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((combatants[currentElement].GetComponent<Being>().DEX / 100) * availableAbilities[playerSelectedAbility].ranks);
+        Print(combatants[currentElement].GetComponent<Being>().powerLevel + " + (" + (dex / 100) + " * " + availableAbilities[playerSelectedAbility].ranks + ") + " + random + " = " + toHit);
 
         Print(combatants[currentElement].name + " uses " + availableAbilities[playerSelectedAbility].abilityName + "!");
         Print("Calculating to hit...");

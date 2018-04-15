@@ -24,16 +24,16 @@ public class Dice
         //initialize
         int i, ii, iii;
         int lowest, total = 0;
-        int[] rolls = new int[4] { 0, 0, 0, 0 };
+        int[] rolls = new int[10] { 0, 0, 0,0,0,0,0,0,0,0};
 
 
-        //roll 4d6
-        for (i = 0; i < 4; i++)
+        //roll 10d20
+        for (i = 0; i < 10; i++)
         {
-            rolls[i] = rng.Next(1, 7);
+            rolls[i] = rng.Next(1, 21);
         }
 
-
+        /*
         //calculate lowest
         lowest = rolls[0];
 
@@ -45,6 +45,7 @@ public class Dice
             }
         }
 
+    */
         //Sum rolls
         for (iii = 0; iii < rolls.Length; iii++)
         {
@@ -52,7 +53,7 @@ public class Dice
         }
 
         //drop lowest
-        total -= lowest;
+       // total -= lowest;
 
         //return result cast as an int. Floats were used in the first place because thats what Random.Range outputs.
         return total;
