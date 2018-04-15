@@ -98,8 +98,9 @@ public class Being : MonoBehaviour
         CalculateMods();
     }
 
-    public List<Ability> GetAvaliableAbilities()
+    public List<Ability> GetAvaliableAbilities(bool active)
     {
+
         int abilityCounter = 0;
         List<Ability> abList = new List<Ability>();
 
@@ -110,9 +111,7 @@ public class Being : MonoBehaviour
 
         for (int i = 0; i < abilities.Count; i++)
         {
-            
-
-            if (abilities[i].CanThisBeUsed())
+            if ((abilities[i].activeAbility == active) && (abilities[i].CanThisBeUsed()))
             {
                 abilityCounter++;
                 abList.Add(abilities[i]);

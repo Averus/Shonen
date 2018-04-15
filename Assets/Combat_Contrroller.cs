@@ -33,7 +33,7 @@ public class CombatController : MonoBehaviour
 
     public List<Being> selectedTargets = new List<Being>(); //
 
-    public List<Ability> avaliableAbilities = new List<Ability>(); //A holder for a list of abilities avaliable at a given time
+    public List<Ability> availableAbilities = new List<Ability>(); //A holder for a list of abilities avaliable at a given time
 
  
 
@@ -88,17 +88,22 @@ public class CombatController : MonoBehaviour
   
     }
 
+
+    public void GetAbilities(bool active){
+        Print ("Getting abilities");
+        availableAbilities = combatants[currentElement].GetComponent<Being>().GetAvaliableAbilities(true);
+    }
+
+
     public void ListAbilities()
     {
         Print("Please select ability");
 
-        avaliableAbilities = combatants[currentElement].GetComponent<Being>().GetAvaliableAbilities();
-
-        if (avaliableAbilities.Count != 0)
+        if (availableAbilities.Count != 0)
         {
-            for (int i = 0; i < avaliableAbilities.Count; i++) // list the playable characters abilities that are avaliable to use
+            for (int i = 0; i < availableAbilities.Count; i++) // list the playable characters abilities that are avaliable to use
             {
-                Print("" + (i + 1) + ". " + avaliableAbilities[i].abilityName);
+                Print("" + (i + 1) + ". " + availableAbilities[i].abilityName);
             }
         }
     }
@@ -106,9 +111,9 @@ public class CombatController : MonoBehaviour
     public void ListTargets()
     {
 
-        Ability ability = avaliableAbilities[playerSelectedAbility];
+        Ability ability = availableAbilities[playerSelectedAbility];
 
-        Print("Please select targets for " + avaliableAbilities[playerSelectedAbility].abilityName);
+        Print("Please select targets for " + availableAbilities[playerSelectedAbility].abilityName);
         
         validTargets = ability.GetPossibleTargets(combatants);
 
@@ -131,11 +136,6 @@ public class CombatController : MonoBehaviour
         turn++; //Increment the turn counter
         currentElement++;
         currentState = CombatStates.MAINLOOP;
-    }
-
-    public void CheckForRelevantPassiveAbilities(Being b, )
-    {
-        //if ability is passive and fires in teh current state then fire?
     }
 
     public void SortByInitiative()
@@ -188,6 +188,26 @@ public class CombatController : MonoBehaviour
 
     }
 
+    public void checkForRelevantpassiveAbilities()
+    {
+        for (int i = 0; i < combatants.Count; i++)
+        {
+            availableAbilities = combatants[i].GetComponent<Being>().GetAvaliableAbilities(false); //false because it's looking for passive abilities not active ones
+
+            if (availableAbilities.Count == 0)
+            {
+                Print(combatants[i].beingName + "has no relevant passive abilities");
+                break;
+            }
+            for (int ii = 0; ii < availableAbilities.Count; ii++)
+            {
+                availableAbilities[ii].Use()); //Here it's using a passive ability so it needs a gambit style setup from which it gets its bahaviour (behaviour of abilities that arent player controlled)
+            }
+        
+        }
+
+    }
+
     public void PlayerSelectsAbility()
     {
         //clear playerSelectedAbility first?
@@ -199,7 +219,7 @@ public class CombatController : MonoBehaviour
 
             if (int.TryParse(userStr, out number))
             {
-                if (number <= avaliableAbilities.Count && number > 0)
+                if (number <= availableAbilities.Count && number > 0)
                 {
                     playerSelectedAbility = (number - 1);
                     currentState = CombatStates.LISTTARGETS;
@@ -224,10 +244,10 @@ public class CombatController : MonoBehaviour
     {
         
         //wipe the list of selected targets first?
-        if (selectedTargets.Count == avaliableAbilities[playerSelectedAbility].numberOfTargets)
+        if (selectedTargets.Count == availableAbilities[playerSelectedAbility].numberOfTargets)
         {
             //UseAbility(avaliableAbilities[playerSelectedAbility]);
-            Print("Using " + avaliableAbilities[playerSelectedAbility].abilityName);
+            Print("Using " + availableAbilities[playerSelectedAbility].abilityName);
             currentState = CombatStates.CALCULATETOHIT;
         }
 
@@ -241,7 +261,7 @@ public class CombatController : MonoBehaviour
                 if (number <= validTargets.Count && number > 0)
                 {
                     selectedTargets.Add(validTargets[(number - 1)]);
-                    Print("" + validTargets[(number - 1)].beingName + " selected as a target for " + avaliableAbilities[playerSelectedAbility].abilityName + ". " + (avaliableAbilities[playerSelectedAbility].numberOfTargets - selectedTargets.Count) + " left to select.");
+                    Print("" + validTargets[(number - 1)].beingName + " selected as a target for " + availableAbilities[playerSelectedAbility].abilityName + ". " + (availableAbilities[playerSelectedAbility].numberOfTargets - selectedTargets.Count) + " left to select.");
                     
                 }
                 else
@@ -264,9 +284,9 @@ public class CombatController : MonoBehaviour
     private void CalculateToHit()
     {
 
-        int toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((combatants[currentElement].GetComponent<Being>().DEX / 100) * avaliableAbilities[playerSelectedAbility].ranks);
+        int toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((combatants[currentElement].GetComponent<Being>().DEX / 100) * availableAbilities[playerSelectedAbility].ranks);
 
-        Print(combatants[currentElement].name + " uses " + avaliableAbilities[playerSelectedAbility].abilityName + "!");
+        Print(combatants[currentElement].name + " uses " + availableAbilities[playerSelectedAbility].abilityName + "!");
         Print("Calculating to hit...");
         Print("To Hit value is " + toHit);
 
@@ -305,6 +325,7 @@ public class CombatController : MonoBehaviour
         {
             case (CombatStates.INITIATIVESORT):
                 SortByInitiative();
+                checkForRelevantpassiveAbilities();
                 currentState = CombatStates.MAINLOOP;
                 break;
 
@@ -319,6 +340,7 @@ public class CombatController : MonoBehaviour
                 break;
 
             case (CombatStates.LISTABILITIES):
+                GetAbilities(true);
                 ListAbilities();
                 currentState = CombatStates.SELECTABILITIES;
                 break;

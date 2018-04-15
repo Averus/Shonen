@@ -67,17 +67,23 @@ public class BeingFactory {
         self.Awake();
         heal.Targets.Add(self);
 
-
+        Ability magicShield = new Ability(gameObject, "Magic Shield", CombatStates.INITIATIVESORT, false);
+        magicShield.Awake();
+        magicShield.numberOfTargets = 1;
+        Self bum = new Self(gameObject, "Self");// this should really be done through prefabs
+        self.Awake();
+        heal.Targets.Add(self);
 
 
         gameObject.GetComponent<Being>().abilities.Add(punch);
         gameObject.GetComponent<Being>().abilities.Add(demonSlash);
         gameObject.GetComponent<Being>().abilities.Add(kick);
         gameObject.GetComponent<Being>().abilities.Add(heal);
+        gameObject.GetComponent<Being>().abilities.Add(magicShield);
 
-       // RequiresEquipped requiresStaff = new RequiresEquipped(gameObject, "Requires Staff", 100);
-       //  heal.Flaws.Add(requiresStaff);
-       // requiresStaff.Awake();
+        // RequiresEquipped requiresStaff = new RequiresEquipped(gameObject, "Requires Staff", 100);
+        //  heal.Flaws.Add(requiresStaff);
+        // requiresStaff.Awake();
 
         Sword sword = new Sword(gameObject, "Bronze Sword", 1);
         gameObject.GetComponent<Being>().Equip(sword, "right hand");

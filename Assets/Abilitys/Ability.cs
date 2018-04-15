@@ -96,6 +96,7 @@ public class Ability: IBeingComponent
     {
         this.parentObject = parentObject;
         abilityName = name;
+        activeAbility = active;
 
     }
 
