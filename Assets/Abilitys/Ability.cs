@@ -81,7 +81,7 @@ public class Ability: IBeingComponent
 
 
 
-    public void Use(List<Being> targets)
+    public void Use()
     {
         //Runs through effects, calcs tohit
         textController.Print("Used " + abilityName);

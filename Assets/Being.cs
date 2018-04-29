@@ -22,9 +22,9 @@ public class Being : MonoBehaviour
 
 
     public int HP;
-    public int reflex;
+    public int mentalReflex;
     public int initiative;
-    public int Maxfocus = 20; //Attention used up when using an ability, can be spent to increase ability chance of hitting
+    //public int Maxfocus = 20; //Attention used up when using an ability, can be spent to increase ability chance of hitting
 
     //core stats
     public int STR;
@@ -35,12 +35,12 @@ public class Being : MonoBehaviour
     public int CHA;
 
     //core stat mods
-    public int STRmod;
-    public int DEXmod;
-    public int CONmod;
-    public int INTmod;
-    public int WISmod;
-    public int CHAmod;
+    int STRmod;
+    int DEXmod;
+    int CONmod;
+    int INTmod;
+    int WISmod;
+    int CHAmod;
 
     //fighting style bonus ----------this should be currently equipped fighing style bonus
     public int FightingStyleBonus;
@@ -49,7 +49,10 @@ public class Being : MonoBehaviour
     public enum Condition{ normal, dazed, staggered, unconcious };
     public Condition condition = Condition.normal;
 
-    
+    public bool isAttacker = false;
+    public bool isTarget = false;
+
+
 
     //abilities lists all abilities of this Being
     public List<Ability> abilities = new List<Ability>();
@@ -58,7 +61,7 @@ public class Being : MonoBehaviour
     public List<Resource> resources = new List<Resource>();
 
     //defences lists all defences of this Being
-    public List<IDefence> defences = new List<IDefence>();
+    public List<Defence> defences = new List<Defence>();
 
     //Equipped lists BodyLocations (head, right hand, legs etc) which can have IEquippable objects put in them
     public List<BodyLocation> bodyLocations = new List<BodyLocation>();
@@ -203,9 +206,42 @@ public class Being : MonoBehaviour
         }
     } 
 
+    public void sortDefences() //sorts defences by reflex
+    {
+        List<Defence> orderedList = new List<Defence>();
+
+        int numberOfDefences = defences.Count;
+
+        while (orderedList.Count < numberOfDefences)
+        {
+            float highestValue = 0;
+            int highestIndex = 0;
+
+            for (int i = 0; i < defences.Count; i++)
+            {
+
+                if (defences[i].reflex >= highestValue)
+                {
+                    highestValue = defences[i].reflex;
+                    highestIndex = i;
+                    //Print(defences[i].abilityName + " reflex " + highestValue + " is at index " + highestIndex);
+                }
+
+
+
+            }
+            //Print("Adding " + defences[highestIndex].abilityName + " to sorted list " + " from index " + highestIndex + "defences is " + defences.Count + "big");
+            orderedList.Add(defences[highestIndex]);
+            //Print("Removed " + defences[highestIndex].abilityName + " to sorted list " + " from index " + highestIndex + "sorted list is " + orderedList.Count + "big");
+            defences.RemoveAt(highestIndex);
+            
+        }
+
+        defences = orderedList;
+    }
+
     private void Print(string str)
     {
-        //   textControllerObj = GameObject.Find("TextControllerObject");
         textControllerObj.GetComponent<TextController>().Print(str);
     }
 

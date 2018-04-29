@@ -190,7 +190,7 @@ public class CombatController : MonoBehaviour
 
     }
 
-    public void checkForRelevantpassiveAbilities()
+    public void checkForRelevantpassiveAbilities() //I think this checks within the current combatstate
     {
         for (int i = 0; i < combatants.Count; i++)
         {
@@ -204,6 +204,7 @@ public class CombatController : MonoBehaviour
             for (int ii = 0; ii < availableAbilities.Count; ii++)
             {
                 Print("Using " + availableAbilities[ii].abilityName); //availableAbilities[ii].Use(); //Here it's using a passive ability so it needs a gambit style setup from which it gets its behaviour (behaviour of abilities that arent player controlled)
+                //this Use needs to be a separate method, sroting relevant abilities in an array and then using them in order like, buffs-->damage-->healing etc
             }
         
         }
@@ -250,7 +251,8 @@ public class CombatController : MonoBehaviour
         {
             //UseAbility(avaliableAbilities[playerSelectedAbility]);
             Print("Using " + availableAbilities[playerSelectedAbility].abilityName);
-            currentState = CombatStates.CALCULATETOHIT;
+            CalculateToHit(combatants[currentElement], availableAbilities[playerSelectedAbility], selectedTargets);
+
         }
 
         if (userInputString != null)
@@ -283,19 +285,72 @@ public class CombatController : MonoBehaviour
 
     }
 
-    private void CalculateToHit()
+    private void CalculateToHit(Being attacker, Ability ability, List<Being> targets)
     {
+        currentState = CombatStates.CALCULATETOHIT; //set the right state
+
+        //Get the toHit value...
+
         float dex = (float)combatants[currentElement].GetComponent<Being>().DEX;
         int random = rng.Next(1, 101);
-        float toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((dex / 100) * availableAbilities[playerSelectedAbility].ranks) + random;
+        float toHit = combatants[currentElement].GetComponent<Being>().powerLevel + ((dex / 100) * ability.ranks) + random;
 
-        Print(combatants[currentElement].GetComponent<Being>().powerLevel + " + (" + (dex / 100) + " * " + availableAbilities[playerSelectedAbility].ranks + ") + " + random + " = " + toHit);
+        Print(attacker.powerLevel + " + (" + (dex / 100) + " * " + ability.ranks + ") + " + random + " = " + toHit);
 
-        Print(combatants[currentElement].name + " uses " + availableAbilities[playerSelectedAbility].abilityName + "!");
         Print("Calculating to hit...");
         Print("To Hit value is " + toHit);
 
+        //does anyone have any passive abilities that work now? This that modulate the tohit value for these guys
+        checkForRelevantpassiveAbilities();
+
+        CalculateToHitDefence(attacker, ability, targets, toHit);
+
+    }
+
+    private void CalculateToHitDefence(Being attacker, Ability ability, List<Being> targets, float toHit)
+    {
         currentState = CombatStates.CALCULATETOHITDEFENCE;
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if(targets[i].mentalReflex < toHit)
+            {
+                checkForRelevantpassiveAbilities();
+                Print("Sorting defences...");
+                targets[i].sortDefences();
+
+                if (targets[i].defences[0].reflex >= toHit)
+                {
+                    targets[i].defences[0].Use();
+                }
+                else
+                {
+                    Print(targets[i].beingName + ": Shit, I can't move fast enough!");
+                }
+
+               
+            }
+
+        }
+        /*
+calc tohitdefence(float tohit)
+
+is tohit above your concious notice (mental reflex?)
+if yes
+	do you have any passive defences that can take something of that speed?
+	if yes
+	The first one fires
+	if no
+	"shit I can't move fast enough!"
+
+if no
+	you get a choice of action including attacks, defences, everything.
+
+*/
+
+
+
+
 
     }
 
@@ -364,7 +419,7 @@ public class CombatController : MonoBehaviour
                 break;
 
             case (CombatStates.CALCULATETOHIT):
-                CalculateToHit();
+                
                 break;
 
 

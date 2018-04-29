@@ -81,6 +81,7 @@
     <Compile Include="Assets\Abilitys\Ability Components\RequiresEquipped.cs" />
     <Compile Include="Assets\Abilitys\Ability.cs" />
     <Compile Include="Assets\Abilitys\Cost.cs" />
+    <Compile Include="Assets\Abilitys\Defence.cs" />
     <Compile Include="Assets\Abilitys\IAbilityComponent.cs" />
     <Compile Include="Assets\Abilitys\IDefence.cs" />
     <Compile Include="Assets\Abilitys\ITarget.cs" />

@@ -70,23 +70,31 @@ public class BeingFactory {
         self.Awake();
         heal.Targets.Add(self);
 
-        Ability magicShield = new Ability(gameObject, "Magic Shield", CombatStates.INITIATIVESORT, false);
-        magicShield.Awake();
-        magicShield.numberOfTargets = 1;
+        Ability adrenaline = new Ability(gameObject, "Adrenaline", CombatStates.INITIATIVESORT, false);
+        adrenaline.Awake();
+        adrenaline.numberOfTargets = 1;
         Self bum = new Self(gameObject, "Self");// this should really be done through prefabs
         self.Awake();
-        heal.Targets.Add(self);
+        adrenaline.Targets.Add(self);
 
+        Defence dodge = new Defence(gameObject, "Dodge", 100, CombatStates.CALCULATETOHITDEFENCE, false);
+        dodge.Awake();
+
+        Defence block = new Defence(gameObject, "Block", 75, CombatStates.CALCULATETOHITDEFENCE, false);
+        block.Awake();
+
+        Defence magicShield = new Defence(gameObject, "Magic Shield", 200, CombatStates.CALCULATETOHITDEFENCE, false);
+        magicShield.Awake();
 
         being.abilities.Add(punch);
         being.abilities.Add(demonSlash);
         being.abilities.Add(kick);
         being.abilities.Add(heal);
-        being.abilities.Add(magicShield);
+        being.abilities.Add(adrenaline);
 
-        // RequiresEquipped requiresStaff = new RequiresEquipped(gameObject, "Requires Staff", 100);
-        //  heal.Flaws.Add(requiresStaff);
-        // requiresStaff.Awake();
+        being.defences.Add(dodge);
+        being.defences.Add(block);
+        being.defences.Add(magicShield);
 
         Sword sword = new Sword(gameObject, "Bronze Sword", 1);
         being.Equip(sword, "right hand");
