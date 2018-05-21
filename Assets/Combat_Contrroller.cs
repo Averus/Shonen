@@ -330,6 +330,11 @@ public class CombatController : MonoBehaviour
 
                
             }
+            else
+            {
+                //you get a choice of action including attacks, defences, everything.
+                currentState = CombatStates.PLAYERTURN;
+            }
 
         }
         /*

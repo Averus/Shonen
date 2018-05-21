@@ -83,7 +83,6 @@
     <Compile Include="Assets\Abilitys\Cost.cs" />
     <Compile Include="Assets\Abilitys\Defence.cs" />
     <Compile Include="Assets\Abilitys\IAbilityComponent.cs" />
-    <Compile Include="Assets\Abilitys\IDefence.cs" />
     <Compile Include="Assets\Abilitys\ITarget.cs" />
     <Compile Include="Assets\Abilitys\Resource.cs" />
     <Compile Include="Assets\Abilitys\Targets\Enemies.cs" />
@@ -108,6 +107,7 @@
     <Compile Include="Assets\old\Effects\Damage.cs" />
     <Compile Include="Assets\old\Flaws\OLDCostsFocus.cs" />
     <Compile Include="Assets\old\Flaws\OLDRequiresEquipped.cs" />
+    <Compile Include="Assets\old\IDefence.cs" />
     <Compile Include="Assets\old\IEffect.cs" />
     <Compile Include="Assets\old\IEquippable.cs" />
     <Compile Include="Assets\old\IFlaw.cs" />
